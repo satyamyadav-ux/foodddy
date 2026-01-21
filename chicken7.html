@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Place Order — Farmhouse Pizza</title>
+
+<style>
+  :root{
+    --accent:#ff4d6d;
+    --accent-dark:#e53b55;
+    --muted:#6b6b6b;
+    --glass: rgba(255,255,255,0.7);
+    --card-bg: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.95));
+    --shadow: 0 10px 30px rgba(10,10,10,0.08);
+    --radius: 14px;
+    --max-width:1100px;
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+
+  *{box-sizing: border-box}
+  html,body{
+    height:100%; margin:0;
+    background:
+      radial-gradient(1200px 600px at -10% 10%, rgba(255,77,109,0.08), transparent 10%),
+      radial-gradient(1000px 500px at 110% 90%, rgba(255,145,77,0.06), transparent 10%),
+      linear-gradient(180deg,#fff6f8 0%, #fff 100%);
+    color:#1f1f1f;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{
+    max-width: var(--max-width);
+    margin: 36px auto;
+    padding: 28px;
+    display:grid; gap:28px;
+    grid-template-columns: 1fr 420px;
+    align-items:start;
+  }
+
+  /* Brand */
+  .brand {display:flex; gap:14px; align-items:center; margin-bottom:6px}
+  .brand .logo {
+    width:56px; height:56px; border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    background: linear-gradient(135deg,var(--accent),var(--accent-dark));
+    color:#fff; font-weight:700; font-size:22px;
+    box-shadow: var(--shadow);
+  }
+  .brand h1 {font-size:20px; margin:0}
+  .brand p {margin:0; font-size:13px; color:var(--muted)}
+
+  /* Card */
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding:22px;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(6px);
+  }
+
+  .section-title {
+    display:flex; justify-content:space-between;
+    margin-bottom:12px;
+  }
+
+  form .row {display:flex; gap:12px; margin-bottom:12px}
+  form .col {flex:1}
+
+  label {display:block; font-size:13px; color:var(--muted); margin-bottom:6px}
+  input, textarea, select {
+    width:100%; padding:12px 14px;
+    border-radius:10px; border:1px solid rgba(30,30,30,0.06);
+    background:#fff; font-size:15px;
+    transition:.18s;
+  }
+  input:focus, textarea:focus, select:focus {
+    outline:none; box-shadow:0 6px 24px rgba(255,77,109,0.12);
+    transform: translateY(-1px);
+  }
+
+  textarea {min-height:100px}
+
+  .pm {
+    background:#fff; padding:10px 14px;
+    border-radius:12px; border:1px solid rgba(0,0,0,0.04);
+    display:flex; gap:10px; align-items:center;
+    font-size:14px; cursor:pointer; flex-wrap:wrap;
+  }
+  .pm small {font-size:12px; color:var(--muted)}
+
+  .notice {
+    margin-top:14px; font-size:13px;
+    color:var(--muted); padding:12px;
+    border-radius:10px; background:rgba(255,255,255,0.6);
+    border:1px dashed rgba(0,0,0,0.04);
+  }
+
+  /* RIGHT summary */
+  .summary {
+    background:#fff; border-radius:12px;
+    padding:18px; box-shadow: var(--shadow);
+    border:1px solid rgba(0,0,0,0.03);
+  }
+
+  .order-badge {display:flex; gap:12px; margin-bottom:12px}
+  .badge {
+    background: linear-gradient(90deg,var(--accent),var(--accent-dark));
+    color:white; padding:8px 12px;
+    border-radius:10px; font-weight:700;
+  }
+
+  .item {display:flex; gap:12px; padding:10px; border-radius:10px; border:1px solid rgba(0,0,0,0.03)}
+  .item .thumb {width:72px; height:72px; border-radius:10px; overflow:hidden}
+  .item img {width:100%; height:100%; object-fit:cover}
+
+  .charges {margin-top:14px; border-top:1px dashed rgba(0,0,0,0.04); padding-top:10px}
+  .charges .row {display:flex; justify-content:space-between; margin-bottom:6px}
+  .total-row {display:flex; justify-content:space-between; margin-top:12px; font-size:18px; font-weight:800}
+
+  .place-btn{
+    margin-top:16px; width:100%; padding:14px;
+    border-radius:12px; border:none; cursor:pointer;
+    background:linear-gradient(90deg,var(--accent),var(--accent-dark));
+    color:white; font-size:16px; font-weight:800;
+    box-shadow:0 12px 30px rgba(229,59,85,0.18);
+  }
+
+  @media(max-width:980px){
+    .wrap{grid-template-columns:1fr}
+    .right-col{order:-1}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- LEFT -->
+  <div class="card">
+    <div class="brand">
+      <div class="logo">🍕</div>
+      <div>
+        <h1>Farmhouse Pizza Order</h1>
+        <p>Fresh • Hot • Delivered Fast</p>
+      </div>
+    </div>
+
+    <div class="section-title">
+      <h2>Delivery Details</h2>
+      <small class="muted">Fresh delivery in 40 mins</small>
+    </div>
+
+    <form>
+      <div class="row">
+        <div class="col">
+          <label>Full name</label>
+          <input type="text" placeholder="e.g. Satyam Yadav" required>
+        </div>
+
+        <div class="col">
+          <label>Phone</label>
+          <input type="tel" placeholder="+91 98765 43210" required>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label>Address</label>
+          <input type="text" placeholder="Street, House no., Locality" required>
+        </div>
+
+        <div class="col">
+          <label>City / Pincode</label>
+          <input type="text" placeholder="Varanasi, 221003" required>
+        </div>
+      </div>
+
+      <div>
+        <label>Delivery instructions (optional)</label>
+        <textarea placeholder="Gate code, call before arrival..."></textarea>
+      </div>
+
+      <div class="section-title" style="margin-top:18px">
+        <h2>Payment</h2>
+        <small class="muted">Choose method</small>
+      </div>
+
+      <div class="payment-methods">
+        <label class="pm"><input type="radio" name="pay" checked hidden>Pay on Delivery <small>Cash / Card</small></label>
+        <label class="pm"><input type="radio" name="pay" hidden>UPI <small>GPay / PhonePe</small></label>
+        <label class="pm"><input type="radio" name="pay" hidden>Card <small>Credit / Debit</small></label>
+      </div>
+
+      <div class="notice">
+        This is a demo checkout. Connect form to backend to enable real orders.
+      </div>
+    </form>
+  </div>
+
+  <!-- RIGHT SUMMARY -->
+  <aside class="summary right-col">
+    <div class="order-badge">
+      <div class="badge">PIZZA</div>
+      <div>
+        <h3>Your Order</h3>
+        <div class="muted">Fast delivery guaranteed</div>
+      </div>
+    </div>
+
+    <div class="items">
+      <div class="item">
+        <div class="thumb">
+          <img src="muttoncurry.jpeg" alt="muttoncurry">
+        </div>
+
+        <div class="meta">
+          <b>muttoncurry</b>
+          <small> mutton curryhalf </small>
+        </div>
+
+        <div class="price"><b>₹349</b></div>
+      </div>
+    </div>
+
+    <div class="charges">
+      <div class="row"><span>Items total</span><span>₹349</span></div>
+      <div class="row"><span>Delivery</span><span>₹20</span></div>
+      <div class="row"><span>Tax</span><span>₹18</span></div>
+      <div class="row"><span>Discount</span><span style="color:#ff4d6d;">-₹20</span></div>
+
+      <div class="total-row">
+        <span>Total</span>
+        <span>₹380</span>
+      </div>
+    </div>
+
+    <button class="place-btn">Place Order — ₹380</button>
+  </aside>
+
+</div>
+
+</body>
+</html>

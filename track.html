@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Tracking | Fudo</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f7;
+        margin: 0;
+        padding: 0;
+    }
+
+    .track-container {
+        width: 90%;
+        max-width: 450px;
+        margin: 30px auto;
+        background: #fff;
+        border-radius: 18px;
+        padding: 20px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+
+    .order-header {
+        text-align: center;
+    }
+    .order-header img {
+        width: 120px;
+        border-radius: 14px;
+    }
+
+    .order-header h2 {
+        margin: 10px 0;
+        font-size: 22px;
+        color: #333;
+    }
+
+    .step {
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+        background: #fafafa;
+        border-radius: 12px;
+        padding: 12px;
+        border-left: 5px solid #ff4d4d;
+    }
+
+    .step-icon {
+        font-size: 32px;
+        margin-right: 15px;
+    }
+
+    .step h3 {
+        margin: 0;
+        font-size: 18px;
+        color: #555;
+    }
+
+    .active {
+        background: #ffeaea;
+        border-left: 6px solid #ff2d2d;
+    }
+
+    .del-contact {
+        margin-top: 30px;
+        padding: 15px;
+        background: #fff3cd;
+        border-radius: 12px;
+        text-align: center;
+        font-size: 18px;
+    }
+
+    .del-contact b {
+        color: #d35400;
+    }
+
+    .rider-box {
+        display: flex;
+        align-items: center;
+        margin-top: 15px;
+        background: #eef7ff;
+        padding: 12px;
+        border-radius: 12px;
+    }
+
+    .rider-box img {
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        margin-right: 15px;
+    }
+
+</style>
+</head>
+<body>
+
+<div class="track-container">
+
+    <!-- IMAGE + TITLE -->
+    <div class="order-header">
+        <img src="https://via.placeholder.com/150?text=Pizza" alt="">
+        <h2>Your Order is on the Way 🍕</h2>
+    </div>
+
+    <!-- STEPS -->
+    <div class="step">
+        <div class="step-icon">📩</div>
+        <h3>Order Placed</h3>
+    </div>
+
+    <div class="step active">
+        <div class="step-icon">👨‍🍳</div>
+        <h3>Preparing Your Food</h3>
+    </div>
+
+    <div class="step">
+        <div class="step-icon">🛵</div>
+        <h3>Out for Delivery</h3>
+    </div>
+
+    <div class="step">
+        <div class="step-icon">📦</div>
+        <h3>Delivered</h3>
+    </div>
+
+    <!-- RIDER DETAILS -->
+    <div class="rider-box">
+        <img src="rider.jpeg" alt="Rider">
+        <div>
+            <b>Rider: Amit Sharma</b><br>
+            Vehicle: UP32 AB 9090
+        </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="del-contact">
+        For help call rider: <b>+91 98765 43210</b>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Place Order — Fudo</title>
+
+<!--
+  Premium Place Order page
+  - Pure HTML + CSS (no JS)
+  - Responsive, mobile-first
+  - Replace images/text/prices as needed
+-->
+
+<style>
+  :root{
+    --accent:#ff4d6d;
+    --accent-dark:#e53b55;
+    --muted:#6b6b6b;
+    --glass: rgba(255,255,255,0.7);
+    --card-bg: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.95));
+    --shadow: 0 10px 30px rgba(10,10,10,0.08);
+    --radius: 14px;
+    --max-width:1100px;
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+
+  *{box-sizing: border-box}
+  html,body{height:100%; margin:0; background:
+    radial-gradient(1200px 600px at -10% 10%, rgba(255,77,109,0.08), transparent 10%),
+    radial-gradient(1000px 500px at 110% 90%, rgba(255,145,77,0.06), transparent 10%),
+    linear-gradient(180deg,#fff6f8 0%, #fff 100%);
+    color:#1f1f1f; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  }
+
+  .wrap{
+    max-width: var(--max-width);
+    margin: 36px auto;
+    padding: 28px;
+    display:grid;
+    gap:28px;
+    grid-template-columns: 1fr 420px;
+    align-items:start;
+  }
+
+  /* Header */
+  .brand {
+    display:flex;
+    gap:14px;
+    align-items:center;
+    margin-bottom:6px;
+  }
+  .brand .logo {
+    width:56px; height:56px; border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    background: linear-gradient(135deg,var(--accent),var(--accent-dark));
+    color:#fff; font-weight:700; font-size:22px; box-shadow: var(--shadow);
+  }
+  .brand h1 {font-size:20px; margin:0; letter-spacing:0.2px}
+  .brand p {margin:0; font-size:13px; color:var(--muted)}
+
+  /* Left column (form) */
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding:22px;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(6px);
+  }
+
+  .section-title {
+    display:flex; align-items:center; justify-content:space-between;
+    gap:12px; margin-bottom:12px;
+  }
+  .section-title h2 {font-size:18px; margin:0}
+  .section-title small {color:var(--muted); font-size:13px}
+
+  form .row {display:flex; gap:12px; margin-bottom:12px}
+  form .col {flex:1}
+
+  label {display:block; font-size:13px; color:var(--muted); margin-bottom:6px}
+  input[type="text"], input[type="tel"], input[type="email"], textarea, select {
+    width:100%; padding:12px 14px; border-radius:10px; border:1px solid rgba(30,30,30,0.06);
+    background: #fff; font-size:15px; color:#111;
+    transition: box-shadow .18s, transform .18s;
+  }
+  input:focus, textarea:focus, select:focus {
+    outline: none; box-shadow: 0 6px 24px rgba(255,77,109,0.12); transform: translateY(-1px);
+  }
+  textarea {min-height:100px; resize:vertical}
+
+  .hint {font-size:13px; color:var(--muted)}
+
+  .payment-methods {display:flex; gap:10px; margin-top:12px; flex-wrap:wrap}
+  .pm {
+    background:#fff; border-radius:12px; padding:10px 14px; display:flex; gap:10px; align-items:center;
+    border:1px solid rgba(30,30,30,0.04); cursor:pointer; font-weight:600; font-size:14px;
+  }
+  .pm small {font-weight:500; color:var(--muted); font-size:12px}
+
+  .notice {
+    margin-top:14px; font-size:13px; color:var(--muted); padding:12px; border-radius:10px; background:rgba(255,255,255,0.6);
+    border:1px dashed rgba(0,0,0,0.04);
+  }
+
+  /* Right column (order summary) */
+  .summary {
+    position:relative;
+    background:linear-gradient(180deg, #fff, #fffefc);
+    border-radius:12px; padding:18px; box-shadow: var(--shadow);
+    border: 1px solid rgba(0,0,0,0.03);
+  }
+
+  .order-badge {
+    display:flex; gap:12px; align-items:center; margin-bottom:12px;
+  }
+  .badge {
+    background: linear-gradient(90deg,var(--accent),var(--accent-dark));
+    color:white; padding:8px 12px; border-radius:10px; font-weight:700;
+  }
+  .summary h3 {margin:0; font-size:16px}
+  .summary .addr {font-size:13px; color:var(--muted); margin-top:6px}
+
+  .items {
+    margin-top:14px; display:flex; flex-direction:column; gap:12px;
+  }
+  .item {
+    display:flex; gap:12px; align-items:center; background:#fff; padding:10px; border-radius:10px;
+    border:1px solid rgba(0,0,0,0.03);
+  }
+  .item .thumb {width:72px; height:72px; border-radius:10px; overflow:hidden; flex:0 0 72px}
+  .item img {width:100%; height:100%; object-fit:cover; display:block}
+  .item .meta {flex:1}
+  .item .meta b{display:block}
+  .item .meta small{display:block; color:var(--muted); margin-top:6px}
+  .item .price {font-weight:700; color:#111}
+
+  .charges {
+    margin-top:14px; background:transparent; padding-top:10px; border-top:1px dashed rgba(0,0,0,0.04);
+  }
+  .charges .row {display:flex; justify-content:space-between; margin-bottom:6px; color:var(--muted)}
+  .total-row {display:flex; justify-content:space-between; margin-top:12px; font-weight:800; font-size:18px}
+
+  .place-btn {
+    margin-top:16px; width:100%; padding:14px; border-radius:12px; border:none; cursor:pointer;
+    color:white; font-weight:800; font-size:16px;
+    background: linear-gradient(90deg,var(--accent),var(--accent-dark));
+    box-shadow: 0 12px 30px rgba(229,59,85,0.18);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .place-btn:active{ transform: translateY(2px); box-shadow: 0 6px 16px rgba(229,59,85,0.12) }
+
+  /* small helpers */
+  .muted {color:var(--muted); font-size:13px}
+  .small {font-size:13px}
+
+  /* responsive */
+  @media (max-width:980px){
+    .wrap{grid-template-columns: 1fr; padding:18px}
+    .right-col{order:-1}
+  }
+
+  /* subtle decorative footer inside card */
+  .summary .foot {
+    margin-top:12px; font-size:13px; color:var(--muted); text-align:center;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- LEFT: form -->
+  <div class="card" aria-labelledby="order-heading">
+    <div class="brand" role="banner">
+      <div class="logo">🍕</div>
+      <div>
+        <h1 id="order-heading">Place your order</h1>
+        <p>Fast • Fresh • Secure</p>
+      </div>
+    </div>
+
+    <!-- Delivery -->
+    <div class="section-title">
+      <h2>Delivery Details</h2>
+      <small class="muted">We deliver within 45 mins</small>
+    </div>
+
+    <form action="#" method="post" novalidate>
+      <div class="row">
+        <div class="col">
+          <label for="name">Full name</label>
+          <input id="name" name="name" type="text" placeholder="e.g. Rohit Kumar" required />
+        </div>
+        <div class="col">
+          <label for="phone">Phone</label>
+          <input id="phone" name="phone" type="tel" placeholder="+91 98765 43210" required />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label for="address">Delivery address</label>
+          <input id="address" name="address" type="text" placeholder="House no., Street, Locality" required />
+        </div>
+        <div class="col">
+          <label for="city">City / Pincode</label>
+          <input id="city" name="city" type="text" placeholder="Lucknow, 226001" required />
+        </div>
+      </div>
+
+      <div>
+        <label for="notes">Delivery instructions <span class="muted small"> (optional)</span></label>
+        <textarea id="notes" name="notes" placeholder="Gate code, call on arrival, etc."></textarea>
+      </div>
+
+      <div class="section-title" style="margin-top:18px">
+        <h2>Payment</h2>
+        <small class="muted">Choose a method</small>
+      </div>
+
+      <div class="payment-methods">
+        <label class="pm">
+          <input type="radio" name="pay" checked style="display:none"> <span>Pay on delivery</span>
+          <small>Cash / Card on delivery</small>
+        </label>
+
+        <label class="pm">
+          <input type="radio" name="pay" style="display:none"> <span>UPI</span>
+          <small>Google Pay / PhonePe</small>
+        </label>
+
+        <label class="pm">
+          <input type="radio" name="pay" style="display:none"> <span>Card</span>
+          <small>Debit / Credit</small>
+        </label>
+      </div>
+
+      <div class="notice">
+        <strong>Note:</strong> This is a demo ordering page — the form action can be connected to your backend or payment gateway later.
+      </div>
+    </form>
+  </div>
+
+  <!-- RIGHT: order summary -->
+  <aside class="summary right-col" aria-labelledby="summary-heading">
+    <div class="order-badge">
+      <div class="badge">FAST</div>
+      <div>
+        <h3 id="summary-heading">Your order</h3>
+        <div class="addr muted">Delivery to: 226001 • Pickup: 12 min</div>
+      </div>
+    </div>
+
+    <div class="items">
+      <div class="item">
+        <div class="thumb"><img src="margiretaa.jpeg" alt=""></div>
+        <div class="meta">
+          <b>Margherita Pizza</b>
+          <small>Classic • Cheese</small>
+        </div>
+        <div class="price">₹199</div>
+      </div>
+
+      
+
+    <div class="charges">
+      <div class="row"><span>Items total</span><span>₹498</span></div>
+      <div class="row"><span>Delivery</span><span>₹29</span></div>
+      <div class="row"><span>Tax</span><span>₹45</span></div>
+      <div class="row"><span>Discount</span><span style="color:var(--accent)">-₹50</span></div>
+      <div class="total-row"><span>Total</span><span>₹522</span></div>
+    </div>
+
+    <button class="place-btn" type="submit">Place order — Pay on delivery</button>
+
+    <div class="foot">By placing order you agree to our <span style="color:var(--accent)">terms & privacy</span>.</div>
+  </aside>
+
+</div>
+
+</body>
+</html>

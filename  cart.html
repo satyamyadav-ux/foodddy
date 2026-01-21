@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Food Product Page</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #fff0f2;
+    margin: 0;
+    padding: 0;
+}
+
+/* MAIN CONTAINER */
+.container {
+    width: 90%;
+    margin: auto;
+    padding-top: 20px;
+    display: flex;
+    gap: 30px;
+}
+
+/* LEFT IMAGE SECTION */
+.left-section {
+    width: 55%;
+}
+
+.main-image img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.thumbnail-list {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+.thumbnail-list img {
+    width: 90px;
+    height: 90px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+.thumbnail-list img:hover {
+    border: 2px solid #ff4d6d;
+}
+
+/* RIGHT SECTION */
+.right-section {
+    width: 45%;
+    padding: 15px;
+    background: white;
+    border-radius: 10px;
+}
+
+.title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #ff4d6d;
+}
+
+.price-box {
+    margin-top: 20px;
+}
+.price {
+    font-size: 26px;
+    font-weight: bold;
+}
+.rating {
+    color: #ff9800;
+    margin-left: 10px;
+}
+
+/* QUANTITY SELECTOR */
+.qty-box {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-top:15px;
+}
+.qty-box button {
+    background:#ff4d6d;
+    color:#fff;
+    border:none;
+    padding:8px 15px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:18px;
+}
+#qtyDisplay { font-weight:600; min-width:25px; text-align:center; }
+
+/* BUTTONS */
+.big-btn{
+    width:100%;
+    padding:15px;
+    background:#ff4d6d;
+    color:white;
+    margin-top:20px;
+    border:none;
+    font-size:18px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+/* TABS SECTION */
+.tabs-box {
+    width: 90%;
+    margin: 40px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.tab-links {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+.tab-links a {
+    padding: 10px 20px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    text-decoration: none;
+    color: black;
+    transition: 0.3s;
+}
+.tab-links a:hover {
+    background: #ffe6eb;
+}
+.tab-section {
+    margin-top: 25px;
+    background: #fcfcfc;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* FOOTER */
+footer {
+    margin-top:50px;
+    background:#222;
+    color:white;
+    text-align:center;
+    padding:20px;
+    font-size:14px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- LEFT IMAGE -->
+    <div class="left-section">
+        <div class="main-image">
+            <img id="displayImage" src="margherita1.jpg" alt="Margherita Pizza">
+        </div>
+        <div class="thumbnail-list">
+            <img src="margherita1.jpg" onclick="changeImage('margherita1.jpg')">
+            <img src="margherita2.jpg" onclick="changeImage('margherita2.jpg')">
+            <img src="margherita3.jpg" onclick="changeImage('margherita3.jpg')">
+        </div>
+    </div>
+
+    <!-- RIGHT INFO -->
+    <div class="right-section">
+        <div class="title">Margherita Pizza</div>
+
+        <div class="price-box">
+            <span class="price">₹199</span>
+            <span class="rating">⭐ 4.5 (120 reviews)</span>
+        </div>
+
+        <div class="qty-box">
+            <button onclick="decQty()">−</button>
+            <div id="qtyDisplay">1</div>
+            <button onclick="incQty()">+</button>
+        </div>
+
+        <button class="big-btn" onclick="addToCart()">Add to Cart</button>
+        <button class="big-btn" onclick="orderNow()">Order Now</button>
+    </div>
+</div>
+
+<!-- TABS SECTION -->
+<div class="tabs-box">
+    <div class="tab-links">
+        <a href="#description">Description</a>
+        <a href="#ingredients">Ingredients</a>
+        <a href="#reviews">Reviews</a>
+    </div>
+    <div id="description" class="tab-section">
+        <h3>Description</h3>
+        <p>Classic Margherita pizza with fresh tomatoes, mozzarella, and basil.</p>
+    </div>
+    <div id="ingredients" class="tab-section">
+        <h3>Ingredients</h3>
+        <p>Tomato Sauce, Mozzarella Cheese, Fresh Basil, Olive Oil, Pizza Dough</p>
+    </div>
+    <div id="reviews" class="tab-section">
+        <h3>Reviews</h3>
+        <p>⭐⭐⭐⭐⭐ Excellent taste!</p>
+        <p>⭐⭐⭐⭐ Good but could be hotter.</p>
+        <p>⭐⭐⭐⭐⭐ Loved it!</p>
+    </div>
+</div>
+
+<footer>
+    &copy; 2025 Fudo Food Delivery. All rights reserved.
+</footer>
+
+<script>
+let qty = 1;
+function changeImage(img){ document.getElementById('displayImage').src = img; }
+function incQty(){ qty++; document.getElementById('qtyDisplay').innerText = qty; }
+function decQty(){ if(qty>1){ qty--; document.getElementById('qtyDisplay').innerText = qty; } }
+function addToCart(){ alert('Added '+qty+' item(s) to cart!'); }
+function orderNow(){ alert('Order placed for '+qty+' item(s)!'); }
+</script>
+
+</body>
+</html>

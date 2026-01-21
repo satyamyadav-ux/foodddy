@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fudo Order Page</title>
+<style>
+body { margin:0; font-family:'Segoe UI', sans-serif; background:#fff0f2; padding:20px; }
+h1 { text-align:center; color:#ff4d6d; margin-top:20px; }
+.food-container { max-width:600px; margin:20px auto; background:#fff; border-radius:20px; padding:20px; box-shadow:0 6px 20px rgba(0,0,0,0.1); text-align:center; }
+.food-container img { width:100%; border-radius:15px; object-fit:cover; }
+.food-container h2 { margin:15px 0 5px 0; color:#ff4d6d; }
+.price { font-size:20px; font-weight:600; color:#333; margin:5px 0; }
+.rating { font-size:14px; color:#ff9800; margin-bottom:15px; }
+.qty-box { display:flex; justify-content:center; align-items:center; gap:15px; margin-bottom:20px; }
+.qty-box button { background:#ff4d6d; color:#fff; border:none; padding:10px 15px; border-radius:8px; cursor:pointer; font-size:18px; }
+#qty { font-size:18px; font-weight:600; min-width:25px; text-align:center; }
+.add-cart-btn { width:100%; padding:12px; background:#ff4d6d; color:#fff; border:none; border-radius:12px; font-size:16px; cursor:pointer; margin-bottom:10px; }
+.cart-section { max-width:600px; margin:30px auto; background:#fff; border-radius:15px; padding:20px; box-shadow:0 4px 15px rgba(0,0,0,0.1); }
+.cart-item { display:flex; gap:15px; margin-bottom:15px; align-items:center; }
+.cart-item img { width:60px; height:60px; border-radius:10px; object-fit:cover; }
+.cart-item div { flex-grow:1; }
+.cart-total { font-weight:700; font-size:18px; text-align:right; margin-top:10px; }
+.checkout-btn { margin-top:15px; width:100%; padding:12px; background:#ff4d6d; color:#fff; border:none; border-radius:10px; font-size:16px; cursor:pointer; }
+</style>
+</head>
+<body>
+
+<h1>Order Your Food</h1>
+
+<div class="food-container">
+    <img src="margiretaa.jpeg" alt="Margherita Pizza">
+    <h2>Margherita Pizza</h2>
+    <p class="price">₹199</p>
+    <p class="rating">⭐ 4.5 (120 reviews)</p>
+
+    <div class="qty-box">
+        <button onclick="dec()">−</button>
+        <div id="qty">1</div>
+        <button onclick="inc()">+</button>
+    </div>
+
+    <button class="add-cart-btn" onclick="addToCart()">Add to Cart</button>
+</div>
+
+<div class="cart-section" id="cartSection">
+    <h2>Your Cart</h2>
+    <div id="cartList"></div>
+    <div class="cart-total">Total: ₹<span id="totalPrice">0</span></div>
+    <button class="checkout-btn" onclick="checkout()">Checkout</button>
+</div>
+
+<script>
+let qty = 1;
+let price = 199;
+let cart = [];
+
+function inc(){ qty++; document.getElementById('qty').innerText = qty; }
+function dec(){ if(qty>1) qty--; document.getElementById('qty').innerText = qty; }
+
+function addToCart(){
+    let exist = cart.find(i=>i.name==="Margherita Pizza");
+    if(exist){ exist.qty += qty; } 
+    else{ cart.push({name:"Margherita Pizza", img:"margiretaa.jpeg", price:price, qty:qty}); }
+    renderCart();
+}
+
+function renderCart(){
+    const list = document.getElementById('cartList');
+    list.innerHTML = '';
+    let total = 0;
+    cart.forEach(item=>{
+        list.innerHTML += `<div class="cart-item">
+            <img src="${item.img}">
+            <div><b>${item.name}</b><br>₹${item.price} × ${item.qty} = ₹${item.price*item.qty}</div>
+        </div>`;
+        total += item.price*item.qty;
+    });
+    document.getElementById('totalPrice').innerText = total;
+}
+
+function checkout(){
+    if(cart.length===0){ alert("Cart is empty!"); return; }
+    let summary = "Order Summary:\n";
+    cart.forEach(item=>{ summary += `${item.name} x${item.qty} = ₹${item.price*item.qty}\n`; });
+    summary += `Total: ₹${cart.reduce((a,b)=>a+b.price*b.qty,0)}`;
+    alert(summary + "\n\nOrder placed successfully!");
+    cart=[];
+    renderCart();
+}
+</script>
+
+</body>
+</html>

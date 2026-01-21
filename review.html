@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fudo Reviews</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #ff4d6d, #ff914d);
+    }
+
+    /* HEADER */
+    .header {
+        text-align: center;
+        padding: 40px 20px;
+        color: white;
+    }
+
+    .header h1 {
+        font-size: 40px;
+        font-weight: 800;
+    }
+
+    /* GRID */
+    .review-container {
+        width: 92%;
+        max-width: 1200px;
+        margin: auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+        padding-bottom: 60px;
+    }
+
+    /* REVIEW CARD */
+    .review-card {
+        backdrop-filter: blur(15px);
+        background: rgba(255, 255, 255, 0.17);
+        border-radius: 18px;
+        padding: 20px;
+        color: #fff;
+        border: 1px solid rgba(255,255,255,0.25);
+        transition: 0.3s;
+        animation: fadeIn 0.8s ease forwards;
+    }
+    .review-card:hover {
+        transform: translateY(-6px);
+        background: rgba(255, 255, 255, 0.23);
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    .user {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .user img {
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        margin-right: 15px;
+        border: 2px solid #fff;
+    }
+
+    .stars { color: gold; font-size: 18px; margin-bottom: 8px; }
+
+    /* BUTTON */
+    .add-review-btn {
+        display: block;
+        margin: 40px auto;
+        padding: 14px 30px;
+        background: #fff;
+        color: #ff4d6d;
+        font-size: 18px;
+        font-weight: 600;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .add-review-btn:hover {
+        background: #ffe2e8;
+    }
+
+    /* POPUP FORM */
+    .popup {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.55);
+        display: none;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .popup-box {
+        width: 90%;
+        max-width: 400px;
+        background: #fff;
+        padding: 25px;
+        border-radius: 18px;
+        animation: zoomIn .3s;
+    }
+
+    @keyframes zoomIn {
+        from { transform: scale(0.8); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+
+    input, textarea {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        font-size: 15px;
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 12px;
+        background: #ff4d6d;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 18px;
+        cursor: pointer;
+        margin-top: 5px;
+    }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Our Happy Customers 😊</h1>
+    <p>Real feedback from people who enjoy Fudo!</p>
+</div>
+
+<!-- REVIEW GRID -->
+<div class="review-container" id="reviewList">
+
+    <!-- TEMPLATE START -->
+    <script>
+        let sampleReviews = [
+            ["Neha Sharma", "Food was super tasty and delivered hot!", 5, "https://randomuser.me/api/portraits/women/44.jpg"],
+            ["Rohit Verma", "Loved the pizza, fast delivery 🔥", 4, "https://randomuser.me/api/portraits/men/36.jpg"],
+            ["Amit Singh", "Great rider behaviour + warm food!", 5, "https://randomuser.me/api/portraits/men/22.jpg"],
+            ["Sana Khan", "Korean food was amazing 😍", 5, "https://randomuser.me/api/portraits/women/55.jpg"],
+            ["Anjali Mehta", "Quick delivery, fresh food!", 4, "https://randomuser.me/api/portraits/women/12.jpg"],
+            ["Vikas S.", "Loved the entire experience!", 5, "https://randomuser.me/api/portraits/men/10.jpg"],
+            ["Pooja K", "Taste is just awesome 👌", 5, "https://randomuser.me/api/portraits/women/19.jpg"],
+            ["Zaid Khan", "Affordable and tasty 😍", 4, "https://randomuser.me/api/portraits/men/45.jpg"],
+            ["Harshita", "Packaging was premium!", 5, "https://randomuser.me/api/portraits/women/25.jpg"],
+            ["Kabir", "Fastest delivery I ever got!", 5, "https://randomuser.me/api/portraits/men/4.jpg"]
+        ];
+    </script>
+
+</div>
+
+<!-- ADD REVIEW BUTTON -->
+<button class="add-review-btn" onclick="openPopup()">Add Your Review ✍️</button>
+
+<!-- POPUP FORM -->
+<div class="popup" id="popup">
+    <div class="popup-box">
+        <h2>Add Review</h2>
+
+        <input type="text" id="name" placeholder="Your Name">
+        <input type="number" id="rating" placeholder="Rating (1-5)">
+        <textarea id="message" rows="4" placeholder="Write your review..."></textarea>
+
+        <button class="submit-btn" onclick="addReview()">Submit</button>
+    </div>
+</div>
+
+<script>
+    function loadReviews() {
+        const container = document.getElementById("reviewList");
+        sampleReviews.forEach(r => {
+            container.innerHTML += createCard(r[0], r[1], r[2], r[3]);
+        });
+    }
+
+    function createCard(name, text, stars, img) {
+        let starHtml = "⭐ ".repeat(stars);
+        return `
+        <div class="review-card">
+            <div class="user">
+                <img src="${img}">
+                <h3>${name}</h3>
+            </div>
+            <div class="stars">${starHtml}</div>
+            <p>${text}</p>
+        </div>`;
+    }
+
+    function openPopup() {
+        document.getElementById("popup").style.display = "flex";
+    }
+
+    function addReview() {
+        let name = document.getElementById("name").value;
+        let rating = document.getElementById("rating").value;
+        let message = document.getElementById("message").value;
+
+        if (name == "" || rating == "" || message == "") {
+            alert("Please fill all fields");
+            return;
+        }
+
+        let newCard = createCard(name, message, rating, "https://randomuser.me/api/portraits/men/30.jpg");
+        document.getElementById("reviewList").innerHTML += newCard;
+
+        document.getElementById("popup").style.display = "none";
+    }
+
+    loadReviews();
+</script>
+
+</body>
+</html>

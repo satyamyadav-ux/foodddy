@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fudo - Food Delivery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
+            overflow-x: hidden;
+        }
+        .food-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    padding: 20px;
+}
+
+.food-box {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    padding-bottom: 15px;
+    transition: 0.3s;
+    cursor: pointer;
+    text-align: center;
+}
+
+.food-box:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+.img-box {
+    overflow: hidden;
+    border-radius: 12px 12px 0 0;
+}
+
+.img-box img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    transition: 0.3s;
+}
+
+.food-box:hover img {
+    transform: scale(1.1);
+}
+
+.food-box h3 {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.price {
+    font-size: 17px;
+    color: #e63946;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+.rating {
+    font-size: 14px;
+    color: #555;
+}
+
+
+
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 80px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: #ff6b6b;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 35px;
+            align-items: center;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav a:hover {
+            color: #ff6b6b;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .search-icon, .cart-icon {
+            cursor: pointer;
+            font-size: 20px;
+            color: #666;
+            transition: color 0.3s;
+        }
+
+        .search-icon:hover, .cart-icon:hover {
+            color: #ff6b6b;
+        }
+
+        .login-btn {
+            padding: 10px 30px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            padding: 80px 80px;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: 56px;
+            color: #333;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero-content .highlight {
+            color: #ff6b6b;
+        }
+
+        .hero-content p {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .get-started {
+            padding: 15px 35px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .get-started:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .watch-video {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .play-icon {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .customer-badge {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            width: fit-content;
+        }
+
+        .customer-avatars {
+            display: flex;
+            margin-left: -10px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid white;
+            margin-left: -10px;
+        }
+
+        .avatar:nth-child(1) { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .avatar:nth-child(2) { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .avatar:nth-child(3) { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+
+        .rating {
+            color: #ffc107;
+        }
+
+        .hero-image {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-image {
+    width: 350px;      /* ⭐ Image ka size fix ho jayega */
+    height: auto;
+    object-fit: contain;
+    z-index: 2;
+    animation: float 3s ease-in-out infinite;
+    width: 700px;
+    height: 500;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+    100% { transform: translateY(0px); }
+}
+
+        .food-card {
+            position: absolute;
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .food-card.top {
+            top: 10%;
+            right: 5%;
+        }
+
+        .food-card.bottom {
+            bottom: 20%;
+            left: 5%;
+        }
+
+        .food-image {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            border-radius: 10px;
+        }
+
+        .food-info h4 {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .food-rating {
+            color: #ffc107;
+            font-size: 14px;
+        }
+
+        .decorative-element {
+            position: absolute;
+            animation: rotate 20s linear infinite;
+        }
+
+        .circle-1 {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 193, 7, 0.3);
+            border-radius: 50%;
+            top: 15%;
+            left: 10%;
+        }
+
+        .services {
+            text-align: center;
+            padding: 80px 80px;
+            background: white;
+        }
+
+        .services-header {
+            color: #ff6b6b;
+            font-size: 14px;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .services h2 {
+            font-size: 42px;
+            color: #333;
+            margin-bottom: 60px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 50px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            text-align: center;
+            padding: 20px;
+            transition: transform 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .service-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            font-size: 60px;
+        }
+
+        .service-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .service-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .header, .hero, .services {
+                padding: 40px;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-content h1 {
+                font-size: 36px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .footer {
+    background: #111;
+    color: #fff;
+    padding: 60px 10%;
+    margin-top: 60px;
+}
+
+.footer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 40px;
+}
+
+.footer-col h4 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #ff6b6b;
+}
+
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-col ul li {
+    margin: 10px 0;
+}
+
+.footer-col ul li a {
+    color: #ccc;
+    text-decoration: none;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+.footer-col ul li a:hover {
+    color: #fff;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.footer-social a {
+    font-size: 20px;
+    margin-right: 12px;
+    color: #ff6b6b;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.footer-social a:hover {
+    color: #fff;
+}
+
+.footer-line {
+    border: none;
+    border-top: 1px solid #333;
+    margin: 40px 0 20px;
+}
+
+.footer-bottom {
+    text-align: center;
+    font-size: 14px;
+    color: #aaa;
+}
+
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">🍕</div>
+            <span>Fudo</span>
+        </div>
+        <nav class="nav">
+            <a href="why.html/whyfudo.html">Why fudo?</a>
+            <!--<a href="#services">Services</a> 
+            <a href="#menu">Menu</a>-->
+            <a href="contact.html">Contact</a>
+            <a href="track/track.html">Track Order</a>
+        </nav>
+        <div class="nav-buttons">
+    <span class="search-icon"></span>
+    <a href="carthhistory.html">
+    <span class="cart-icon">🛒</span></a>
+
+    <a href="login.html/login.html">
+        <button class="login-btn"> Login</button>
+    </a>
+</div>
+
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Be The Fastest<br>In Delivering<br>Your <span class="highlight">Food</span></h1>
+            <p>Our job is to filling your tummy with delicious food<br>and with fast and free delivery.</p>
+            <div class="hero-buttons">
+                <a href=""
+                <button class="get-started">Get Started</button>
+               
+                    <a href="https://pin.it/4rD97vNKY" target="_blank" class="watch-video">
+    <div class="play-icon">▶️</div>
+    Watch Video
+</a>
+
+                    
+              
+            </div>
+            <div class="customer-badge">
+                <div class="customer-avatars">
+                    <div class="avatar"></div>
+                    <div class="avatar"></div>
+                    <div class="avatar"></div>
+                </div>
+               <a href="review/review.html" style="text-decoration: none; color: inherit;">
+    <div>
+        <div style="font-weight: 600;">Our Happy Customer</div>
+        <div class="rating">
+            ⭐ 4.8 <span style="color: #999;">(12.5k Review)</span>
+        </div>
+    </div>
+</a>
+
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="decorative-element circle-1"></div>
+            <img class="main-image" src="gemini.png" alt="Hero">
+            
+</section>
+<section class="food-grid-section">
+    <h2 class="food-grid-title">Pizza Categories</h2>
+
+    <div class="food-grid">
+        
+
+
+
+
+        <!-- 1 -->
+        <div class="food-box">
+            <div class="img-box">
+                <a href="pizza1.html">
+                <img src="margiretaa.jpeg" alt="marghirita"></a>
+            </div>
+            <h3>Margherita Pizza</h3>
+            <p class="price">₹199</p>
+        
+            <p class="rating">⭐ 4.5 (120 reviews)</p>
+        
+        
+        </div>
+   
+
+        <!-- 2 -->
+        <div class="food-box">
+            <div class="img-box">
+                <a href="pizza2.html">
+                <img src="farmhousepizza.jpeg" alt="farmhousepizza">
+                </a>
+            </div>
+            <h3>Farmhouse Pizza</h3>
+            <p class="price">₹249</p>
+            <p class="rating">⭐ 4.2 (98 reviews)</p>
+        </div>
+
+        <!-- 3 -->
+        <div class="food-box">
+            <div class="img-box">
+                <a href="pizza3.html">
+                <img src="cheesbrust.jpeg" alt="cheesbrust"></a>
+            </div>
+            <h3>Cheese Burst Pizza</h3>
+            <p class="price">₹299</p>
+            <p class="rating">⭐ 4.7 (210 reviews)</p>
+        </div>
+
+        <!-- 4 -->
+        <div class="food-box">
+            <div class="img-box">
+                <a href="pizza4.html">
+                <img src="peproni.jpeg" alt="pepperoni"></a>
+            </div>
+            <h3>Pepperoni Pizza</h3>
+            <p class="price">₹349</p>
+            <p class="rating">⭐ 4.4 (155 reviews)</p>
+        </div>
+
+        <!-- 5 -->
+        <div class="food-box">
+            <div class="img-box">
+                <a href="pizza5.html">
+                <img src="tandooripizza.jpeg" alt="tandooripizza"></a>
+            </div>
+            <h3>Tandoori Pizza</h3>
+            <p class="price">₹279</p>
+            <p="rating">⭐ 4.6 (180 reviews)</p>
+        </div>
+
+        <!-- 6 -->
+        <div class="food-box">
+            <div class="img-box"><a href="pizza6.html">
+                <img src="veg.jpeg" alt="vegpizzza"></a>
+            </div>
+            <h3>Veg Extravaganza</h3>
+            <p class="price">₹259</p>
+            <p class="rating">⭐ 4.3 (90 reviews)</p>
+        </div>
+
+        <!-- 7 -->
+        <div class="food-box">
+            <div class="img-box">
+                <a href="pizza7.html">
+                <img src="cornpizza.jpeg" alt="cornpizza"></a>
+            </div>
+            <h3>Corn & Cheese</h3>
+            <p class="price">₹199</p>
+            <p class="rating">⭐ 4.1 (70 reviews)</p>
+        </div>
+
+        <!-- 8 -->
+        <div class="food-box">
+            <div class="img-box">
+                <img src="bbq chickenpizza.jpeg" alt="bbqchicken">
+            </div>
+            <h3>BBQ Chicken Pizza</h3>
+            <p class="price">₹329</p>
+            <p class="rating">⭐ 4.8 (240 reviews)</p>
+        </div>
+
+    </div>
+</section>
+<section class="food-grid-section">
+    <h2 class="food-grid-title">Meat Dishes</h2>
+
+    <div class="food-grid">
+
+        <!-- 1 Chicken Curry -->
+        <div class="food-box">
+            <div class="img-box">
+                <img src="Chicken Changezi.jpeg" alt="chicken changezi">
+            </div>
+            <h3>Chicken Curry</h3>
+            <p class="price">₹199</p>
+            <p class="rating">⭐ 4.5 (220 reviews)</p>
+        </div>
+
+        <!-- 2 Chicken Biryani -->
+        <div class="food-box">
+            <div class="img-box">
+                <a href="chicken2.html">
+                <img src="chicken  biryani (2).jpeg" alt=" chicken biryani"></a>
+            </div>
+            <h3>Chicken Biryani</h3>
+            <p class="price">₹249</p>
+            <p class="rating">⭐ 4.7 (500 reviews)</p>
+        </div>
+
+        <!-- 3 Mutton Curry -->
+        <div class="food-box">
+            <div class="img-box"><a href="chicken3.html">
+                <img src="muttoncurry.jpeg" alt="muttoncurry"></a>
+            </div>
+            <h3>Mutton Curry</h3>
+            <p class="price">₹349</p>
+            <p class="rating">⭐ 4.6 (310 reviews)</p>
+        </div>
+
+        <!-- 4 Grilled Chicken -->
+        <div class="food-box">
+            <div class="img-box"><a href="chicken4.html">
+                <img src="grilledchicken.jpeg" alt="grilledchicken"></a>
+            </div>
+            <h3>Grilled Chicken</h3>
+            <p class="price">₹299</p>
+            <p class="rating">⭐ 4.4 (180 reviews)</p>
+        </div>
+
+        <!-- 5 Chicken Tikka -->
+        <div class="food-box">
+            <div class="img-box">
+                <a href="chicken5.html">
+                <img src="chickentikka.jpeg" alt="chickentikka"></a>
+            </div>
+            <h3>Chicken Tikka</h3>
+            <p class="price">₹229</p>
+            <p class="rating">⭐ 4.6 (260 reviews)</p>
+        </div>
+
+        <!-- 6 Butter Chicken -->
+        <div class="food-box">
+            <div class="img-box">
+                <a href="chicken6.html">
+                <img src="buttter chicken.jpeg" alt="butter chicken"></a>
+            </div>
+            <h3>Butter Chicken</h3>
+            <p class="price">₹299</p>
+            <p class="rating">⭐ 4.8 (430 reviews)</p>
+        </div>
+
+        <!-- 7 Fish Fry -->
+        <div class="food-box">
+            <div class="img-box">
+                <a href="chicken7.html">
+                <img src="fish fry.jpeg" alt=" fish fry "></a>
+            </div>
+            <h3>Fish Fry</h3>
+            <p class="price">₹179</p>
+            <p class="rating">⭐ 4.3 (140 reviews)</p>
+        </div>
+
+        <!-- 8 Prawns Masala -->
+        <div class="food-box">
+            <div class="img-box">
+                <a href="chicken8.html">
+                <img src="prwan masala.jpeg" alt=" prwan masala"></a>
+            </div>
+            <h3>Prawns Masala</h3>
+            <p class="price">₹329</p>
+            <p class="rating">⭐ 4.7 (260 reviews)</p>
+        </div>
+
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="footer-container">
+
+        <div class="footer-col">
+            <h3 class="logo"><span>🍕</span> Fudo</h3>
+            <p>Delivering delicious food to your doorsteps with speed & love.</p>
+            <div class="footer-social">
+                <a href="#">🔵</a>
+                <a href="#">🟣</a>
+                <a href="#">🟡</a>
+            </div>
+        </div>
+
+        <div class="footer-col">
+            <h4>Company</h4>
+            <ul>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Why Fudo?</a></li>
+                <li><a href="#">Our Services</a></li>
+                <li><a href="#">Careers</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4>Support</h4>
+            <ul>
+                <li><a href="#">Help Center</a></li>
+                <li><a href="#">Safety Info</a></li>
+                <li><a href="#">FAQs</a></li>
+                <li><a href="#">Report Issue</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4>Get In Touch</h4>
+            <ul>
+                <li><a href="#">📍 Lucknow, India</a></li>
+                <li><a href="#">📞 +91 98765 43210</a></li>
+                <li><a href="#">📧 support@fudo.com</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <hr class="footer-line">
+
+    <div class="footer-bottom">
+        <p>© 2025 Fudo Food Delivery. All Rights Reserved.</p>
+    </div>
+</footer>
+
+
+
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Animate elements on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s ease-out';
+            observer.observe(card);
+        });
+
+        // Button interactions
+       
+        
+
+        
+    </script>
+</body>
+</html>
